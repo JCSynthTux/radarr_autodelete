@@ -1,7 +1,11 @@
+import os
+from dotenv import load_dotenv
 from pyarr import RadarrAPI
 
-host_url = ''
+load_dotenv()
 
-api_key = ''
+host_url = os.getenv('RADARR_HOST');
+
+api_key = os.getenv('RADARR_APIKEY');
 
 radarr = RadarrAPI(host_url, api_key);
