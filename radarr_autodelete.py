@@ -13,12 +13,15 @@ def is_movie_tagged(movie, filtertag):
     else:
         return False
 
-def should_movie_delete(movie, currentTime):
+def should_movie_delete(movie, currentTime, keeptime):
     added = movie['added']
     unifiedAdded = added.split('T', 1)[0]
     dateAddedToDatetime = datetime.strptime(unifiedAdded, '%Y-%m-%d')
     dateAddedInSeconds = int(dateAddedToDatetime.timestamp())
-    print(dateAddedInSeconds)
+
+def daysToSeconds(numberOfDays):
+    days = int(numberOfDays)
+    return days * 24 * 60 * 60
 
 load_dotenv()
 
@@ -30,12 +33,13 @@ radarr = RadarrAPI(host_url, api_key);
 
 movies = radarr.get_movie();
 
-
 dt = datetime.today() 
-secondsNow = int(dt.timestamp())
+secondsNow = int(dt.timestamp()) # Now In Seconds
+keepTime = daysToSeconds(30) # Time To Keep Movies before Deleting
+print(keepTime)
 print(secondsNow)
 for movie in movies:
     tagged_status = is_movie_tagged(movie, 'theaterslist')
     if tagged_status == True:
-        deletable = should_movie_delete(movie, secondsNow)
+        deletable = should_movie_delete(movie, secondsNow, keepTime)
 
