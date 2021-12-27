@@ -27,3 +27,6 @@ The keeptime arguments only expects full days and defaults to 30 days.
 
 - filtertag
 This is the tag this script will look for. This means untagged movies or movies with a different tag will not be touched. filtertag has to be provided
+
+- dryrun
+This is meant to show which movies would be deleted if the flag wasnt set. With this flag set to ```true``` no movies would be deleted. The flag has to be a boolean, so either ```true``` or ```false```. The flag can also be ommited, which is equal to setting this flag to false.
