@@ -3,10 +3,27 @@ Simple script, which deletes movies with a specific tag after a certain amount o
 
 # Pip Packages
 
-1. pyarr
-2. dotenv
+```
+pip3 install pyarr python-dotenv
+```
 
 # Running
-python3 radarr_autodelete.py --keeptime 30 --filtertag theaterslist
+1. Clone this repo and cd into the cloned dir
+2. Create a ```.env``` file
+3. Add the following envs to ```.env```
+    ```
+    RADARR_APIKEY=
+    RADARR_HOST=
+    ```
+4. Add your API Key and Hostname or IP
+5. Run this script with
+    ```
+    python3 radarr_autodelete.py --keeptime 30 --filtertag NameOfYourList
+    ```
 
-The keeptime arguments only expects full days and defaults to 30 days. filtertag has to be provided
+# Arguments
+- keeptime
+The keeptime arguments only expects full days and defaults to 30 days. 
+
+- filtertag
+This is the tag this script will look for. This means untagged movies or movies with a different tag will not be touched. filtertag has to be provided
