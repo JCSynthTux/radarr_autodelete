@@ -1,9 +1,10 @@
 import os
+from argparse import ArgumentParser
 from datetime import datetime
 from dotenv import load_dotenv
 from pyarr import RadarrAPI
 
-def is_movie_tagged(movie, filtertag):
+def is_movie_tagged(movie, filtertag): # Function Checks Movies For A Specific Tag
     tags = movie['tags']
     if tags != []:
         for tag in tags:
@@ -13,22 +14,27 @@ def is_movie_tagged(movie, filtertag):
     else:
         return False
 
-def should_movie_delete(movie, currentTime, keeptime):
+def should_movie_delete(movie, currentTime, keeptime): # Function validates if a movie should be deleted
     added = movie['added']
     unifiedAdded = added.split('T', 1)[0]
     dateAddedToDatetime = datetime.strptime(unifiedAdded, '%Y-%m-%d')
     dateAddedInSeconds = int(dateAddedToDatetime.timestamp())
     savedTime = currentTime - dateAddedInSeconds
-    if savedTime >= keepTime:
+    if savedTime >= keeptime:
         return True
     else:
         return False
 
-def daysToSeconds(numberOfDays):
+def daysToSeconds(numberOfDays): # Function Converts Days To Seconds
     days = int(numberOfDays)
     return days * 24 * 60 * 60
 
 load_dotenv()
+
+parser = ArgumentParser()
+parser.add_argument('--keeptime', help='Time To Keep Movies In Days', default=30)
+parser.add_argument('--filtertag', help='Tag To Filter For')
+args = parser.parse_args()
 
 host_url = os.getenv('RADARR_HOST');
 
@@ -40,13 +46,13 @@ movies = radarr.get_movie();
 
 dt = datetime.today() 
 secondsNow = int(dt.timestamp()) # Now In Seconds
-keepTime = daysToSeconds(10) # Time To Keep Movies before Deleting
-print(keepTime)
-print(secondsNow)
+keepTime = daysToSeconds(int(args.keeptime)) # Time To Keep Movies before Deleting
+filtertag = args.filtertag
+
 for movie in movies:
-    tagged_status = is_movie_tagged(movie, 'theaterslist')
+    tagged_status = is_movie_tagged(movie, filtertag)
     if tagged_status == True:
         deletable = should_movie_delete(movie, secondsNow, keepTime)
         if deletable == True:
-            print('Delete')
-
+            print('Deleting ' + movie['title'])
+            radarr.del_movie(movie['id'], True)
