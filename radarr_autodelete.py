@@ -34,6 +34,7 @@ load_dotenv()
 parser = ArgumentParser()
 parser.add_argument('--keeptime', help='Time To Keep Movies In Days', default=30)
 parser.add_argument('--filtertag', help='Tag To Filter For')
+parser.add_argument('--dryrun', help='Use this to see what results would look like, without loosing data', default=False)
 args = parser.parse_args()
 
 host_url = os.getenv('RADARR_HOST');
@@ -48,11 +49,18 @@ dt = datetime.today()
 secondsNow = int(dt.timestamp()) # Now In Seconds
 keepTime = daysToSeconds(int(args.keeptime)) # Time To Keep Movies before Deleting
 filtertag = args.filtertag
+dryrun = bool(args.dryrun)
+
+if dryrun == True:
+    print('THIS IS A DRYRUN')
 
 for movie in movies:
     tagged_status = is_movie_tagged(movie, filtertag)
     if tagged_status == True:
         deletable = should_movie_delete(movie, secondsNow, keepTime)
         if deletable == True:
-            print('Deleting ' + movie['title'])
-            radarr.del_movie(movie['id'], True)
+            if dryrun == True:
+              print('Deleting ' + movie['title'])
+            else: 
+              print('Deleting ' + movie['title'])
+              radarr.del_movie(movie['id'], True)
