@@ -15,15 +15,16 @@ def is_movie_tagged(movie, filtertag): # Function Checks Movies For A Specific T
         return False
 
 def should_movie_delete(movie, currentTime, keeptime): # Function validates if a movie should be deleted
-    added = movie['added']
-    unifiedAdded = added.split('T', 1)[0]
-    dateAddedToDatetime = datetime.strptime(unifiedAdded, '%Y-%m-%d')
-    dateAddedInSeconds = int(dateAddedToDatetime.timestamp())
-    savedTime = currentTime - dateAddedInSeconds
-    if savedTime >= keeptime:
-        return True
-    else:
-        return False
+    if 'movieFile' in movie:
+        moviefileObj = movie['movieFile']
+        added = moviefileObj['dateAdded']
+        unifiedAdded = added.split('T', 1)[0]
+        dateAddedToDatetime = datetime.strptime(unifiedAdded, '%Y-%m-%d')
+        dateAddedInSeconds = int(dateAddedToDatetime.timestamp())
+        savedTime = currentTime - dateAddedInSeconds
+        if savedTime >= keeptime: return True
+        else: return False
+    else : return False
 
 def daysToSeconds(numberOfDays): # Function Converts Days To Seconds
     days = int(numberOfDays)
