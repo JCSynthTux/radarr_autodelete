@@ -52,7 +52,11 @@ filtertag = args.filtertag
 dryrun = bool(args.dryrun)
 
 if dryrun == True:
-    print('THIS IS A DRYRUN')
+    print('----THIS IS A DRYRUN----')
+
+print('----RADARR_AUTODELETE----')
+print('KEEPTIME: ' + str(args.keeptime))
+print('FILTERTAG: ' + filtertag)
 
 for movie in movies:
     tagged_status = is_movie_tagged(movie, filtertag)
@@ -64,3 +68,5 @@ for movie in movies:
             else: 
               print('Deleting ' + movie['title'])
               radarr.del_movie(movie['id'], True)
+              
+print('----FINISHED----')
