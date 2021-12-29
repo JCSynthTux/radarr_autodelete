@@ -15,7 +15,7 @@ pip3 install pyarr python-dotenv
     RADARR_APIKEY=
     RADARR_HOST=
     ```
-4. Add your API Key and Hostname or IP
+4. Add your API Key and Hostname or IP (Hostname and IP have to http:// or https:// before)
 5. Run this script with
     ```
     python3 radarr_autodelete.py --keeptime 30 --filtertag NameOfYourList
