@@ -38,13 +38,13 @@ parser.add_argument('--filtertag', help='Tag To Filter For')
 parser.add_argument('--dryrun', help='Use this to see what results would look like, without loosing data', default=False)
 args = parser.parse_args()
 
-host_url = os.getenv('RADARR_HOST');
+host_url = os.getenv('RADARR_HOST')
 
-api_key = os.getenv('RADARR_APIKEY');
+api_key = os.getenv('RADARR_APIKEY')
 
-radarr = RadarrAPI(host_url, api_key);
+radarr = RadarrAPI(host_url, api_key)
 
-movies = radarr.get_movie();
+movies = radarr.get_movie()
 
 dt = datetime.today() 
 secondsNow = int(dt.timestamp()) # Now In Seconds
