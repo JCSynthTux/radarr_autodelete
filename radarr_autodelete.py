@@ -1,6 +1,7 @@
 import os
 from argparse import ArgumentParser
 from datetime import datetime
+from tabnanny import verbose
 from dotenv import load_dotenv
 from pyarr import RadarrAPI
 
@@ -36,6 +37,7 @@ parser = ArgumentParser()
 parser.add_argument('--keeptime', help='Time To Keep Movies In Days', default=30)
 parser.add_argument('--filtertag', help='Tag To Filter For')
 parser.add_argument('--dryrun', help='Use this to see what results would look like, without loosing data', default=False)
+parser.add_argument('--verbose', help='Outputs movies deleted')
 args = parser.parse_args()
 
 host_url = os.getenv('RADARR_HOST')
@@ -64,10 +66,9 @@ for movie in movies:
     if tagged_status == True:
         deletable = should_movie_delete(movie, secondsNow, keepTime)
         if deletable == True:
-            if dryrun == True:
+            if dryrun == True | args.verbose == True:
               print('Deleting ' + movie['title'])
-            else: 
-              print('Deleting ' + movie['title'])
+            if dryrun == False:
               radarr.del_movie(movie['id'], True)
               
 print('----FINISHED----')
