@@ -18,4 +18,4 @@ RUN crontab /etc/periodic/radarr_autodelete
 
 RUN touch /var/log/cron.log
 
-CMD cron && tail -f /var/log/cron.log
+CMD /usr/sbin/crond && tail -f /var/log/cron.log
