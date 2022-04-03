@@ -1,0 +1,12 @@
+---
+version: "2.1"
+
+services:
+  radarr_autodelete:
+    image: ghcr.io/jcsynthtux/radarr_autodelete:master
+    container_name: radarr_autodelete
+    environment:
+      - KEEPTIME=${KEEPTIME}
+      - FILTERTAG=${FILTERTAG}
+      - RADARR_HOST=${RADARR_HOST}
+      - RADARR_APIKEY=${RADARR_APIKEY}
