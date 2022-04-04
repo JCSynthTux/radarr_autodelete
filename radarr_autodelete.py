@@ -54,6 +54,8 @@ keepTime = daysToSeconds(int(args.keeptime)) # Time To Keep Movies before Deleti
 filtertag = args.filtertag
 dryrun = bool(args.dryrun)
 
+print('#### ' + dt.strftime("%m/%d/%Y, %H:%M:%S") + ' ####')
+
 if dryrun == True:
     print('----THIS IS A DRYRUN----')
 
@@ -71,4 +73,4 @@ for movie in movies:
             if dryrun == False:
               radarr.del_movie(movie['id'], True)
               
-print('----FINISHED----')
+print('#### FINISHED ###')
