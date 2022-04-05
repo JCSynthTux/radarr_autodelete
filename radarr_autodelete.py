@@ -7,12 +7,12 @@ from pyarr import RadarrAPI
 
 def is_movie_tagged(movie, filtertag): # Function Checks Movies For A Specific Tag
     tags = movie['tags']
-    if tags != []:
-        for tag in tags:
-            texttag = radarr.get_tag(tag)
-            if texttag['label'] == filtertag:
+    if tags != []: # Checks if tag array is not empty
+        for tag in tags: # Iterate over tags
+            texttag = radarr.get_tag(tag) # Get HumanReadable Tags
+            if texttag['label'] == filtertag: # If HumanReadable Tag matches Specified Filter Tag return True
                 return True
-    else:
+    else: # If there are no tags return False
         return False
 
 def should_movie_delete(movie, currentTime, keeptime): # Function validates if a movie should be deleted
