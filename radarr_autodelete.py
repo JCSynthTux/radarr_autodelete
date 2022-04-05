@@ -16,14 +16,14 @@ def is_movie_tagged(movie, filtertag): # Function Checks Movies For A Specific T
         return False
 
 def should_movie_delete(movie, currentTime, keeptime): # Function validates if a movie should be deleted
-    if 'movieFile' in movie:
+    if 'movieFile' in movie: # Checks if movie has been downloaded
         moviefileObj = movie['movieFile']
-        added = moviefileObj['dateAdded']
-        unifiedAdded = added.split('T', 1)[0]
-        dateAddedToDatetime = datetime.strptime(unifiedAdded, '%Y-%m-%d')
+        added = moviefileObj['dateAdded'] # When movie has been downloaded
+        unifiedAdded = added.split('T', 1)[0] # Formatting of date
+        dateAddedToDatetime = datetime.strptime(unifiedAdded, '%Y-%m-%d') # More Formatting of date
         dateAddedInSeconds = int(dateAddedToDatetime.timestamp())
-        savedTime = currentTime - dateAddedInSeconds
-        if savedTime >= keeptime: return True
+        savedTime = currentTime - dateAddedInSeconds # Seconds since download
+        if savedTime >= keeptime: return True # Checks if movie has been longer saved than wanted 
         else: return False
     else : return False
 
