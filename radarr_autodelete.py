@@ -10,10 +10,8 @@ def is_movie_tagged(movie, filtertag): # Function Checks Movies For A Specific T
     if tags != []: # Checks if tag array is not empty
         for tag in tags: # Iterate over tags
             texttag = radarr.get_tag(tag) # Get HumanReadable Tags
-            if texttag['label'] == filtertag: # If HumanReadable Tag matches Specified Filter Tag return True
-                return True
-    else: # If there are no tags return False
-        return False
+            if texttag['label'] == filtertag: return True # If HumanReadable Tag matches Specified Filter Tag return True
+    else: return False # If there are no tags return False
 
 def should_movie_delete(movie, currentTime, keeptime): # Function validates if a movie should be deleted
     if 'movieFile' in movie: # Checks if movie has been downloaded
@@ -56,8 +54,7 @@ dryrun = bool(args.dryrun)
 
 print('#### ' + dt.strftime("%m/%d/%Y, %H:%M:%S") + ' ####')
 
-if dryrun:
-    print('----THIS IS A DRYRUN----')
+if dryrun: print('----THIS IS A DRYRUN----')
 
 print('----RADARR_AUTODELETE----')
 print('KEEPTIME: ' + str(args.keeptime))
@@ -68,9 +65,7 @@ for movie in movies:
     if tagged_status:
         deletable = should_movie_delete(movie, secondsNow, keepTime)
         if deletable:
-            if dryrun | args.verbose:
-              print('Deleting ' + movie['title'])
-            if dryrun == False:
-              radarr.del_movie(movie['id'], True)
+            if dryrun | args.verbose: print('Deleting ' + movie['title'])
+            if dryrun == False: radarr.del_movie(movie['id'], True)
               
 print('#### FINISHED ###')
