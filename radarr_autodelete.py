@@ -56,7 +56,7 @@ dryrun = bool(args.dryrun)
 
 print('#### ' + dt.strftime("%m/%d/%Y, %H:%M:%S") + ' ####')
 
-if dryrun == True:
+if dryrun:
     print('----THIS IS A DRYRUN----')
 
 print('----RADARR_AUTODELETE----')
@@ -65,10 +65,10 @@ print('FILTERTAG: ' + filtertag)
 
 for movie in movies:
     tagged_status = is_movie_tagged(movie, filtertag)
-    if tagged_status == True:
+    if tagged_status:
         deletable = should_movie_delete(movie, secondsNow, keepTime)
-        if deletable == True:
-            if dryrun == True | args.verbose == True:
+        if deletable:
+            if dryrun | args.verbose:
               print('Deleting ' + movie['title'])
             if dryrun == False:
               radarr.del_movie(movie['id'], True)
