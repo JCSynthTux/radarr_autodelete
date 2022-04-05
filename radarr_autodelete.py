@@ -21,15 +21,13 @@ def should_movie_delete(movie, currentTime, keeptime): # Function validates if a
 def should_available_movie_delete(movie, currentTime, keeptime):
     moviefileObj = movie['movieFile']
     added = moviefileObj['dateAdded'] # When movie has been downloaded
-    unifiedAdded = added.split('T', 1)[0] # Formatting of date
-    dateAddedToDatetime = datetime.strptime(unifiedAdded, '%Y-%m-%d') # More Formatting of date
-    dateAddedInSeconds = int(dateAddedToDatetime.timestamp())
-    savedTime = currentTime - dateAddedInSeconds # Seconds since download
-    if savedTime >= keeptime: return True # Checks if movie has been longer saved than wanted 
-    else: return False
+    return validate_timespan_for_delete(added, currentTime, keepTime)
 
 def should_unavailable_movie_delete(movie, currentTime, keeptime):
     added = movie['added']
+    return validate_timespan_for_delete(added, currentTime, keepTime)
+
+def validate_timespan_for_delete(added, currentTime, keeptime):
     unifiedAdded = added.split('T', 1)[0] # Formatting of date
     dateAddedToDatetime = datetime.strptime(unifiedAdded, '%Y-%m-%d') # More Formatting of date
     dateAddedInSeconds = int(dateAddedToDatetime.timestamp())
