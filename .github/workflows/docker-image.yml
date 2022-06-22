@@ -39,5 +39,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: jcsynthtux/radarr_autodelete:latest
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
