@@ -1,0 +1,2 @@
+0 3 * * * python3 /opt/scripts/radarr_autodelete/radarr_autodelete.py --keeptime $KEEPTIME --filtertag $FILTERTAG --deleteunavailablemovies --verbose
+
