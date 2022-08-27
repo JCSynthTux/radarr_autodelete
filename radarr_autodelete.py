@@ -21,11 +21,11 @@ def should_movie_delete(movie, currentTime, keeptime): # Function validates if a
 def should_available_movie_delete(movie, currentTime, keeptime):
     moviefileObj = movie['movieFile']
     added = moviefileObj['dateAdded'] # When movie has been downloaded
-    return validate_timespan_for_delete(added, currentTime, keepTime)
+    return validate_timespan_for_delete(added, currentTime, keeptime)
 
 def should_unavailable_movie_delete(movie, currentTime, keeptime):
     added = movie['added']
-    return validate_timespan_for_delete(added, currentTime, keepTime)
+    return validate_timespan_for_delete(added, currentTime, keeptime)
 
 def validate_timespan_for_delete(added, currentTime, keeptime):
     unifiedAdded = added.split('T', 1)[0] # Formatting of date
@@ -77,6 +77,7 @@ for movie in movies:
     tagged_status = is_movie_tagged(movie, filtertag)
     if tagged_status:
         deletable = should_movie_delete(movie, secondsNow, keepTime)
+        print(deletable)
         if deletable:
             if (dryrun | verbose) | (dryrun & verbose): print('Deleting ' + movie['title'])
             if dryrun == False: radarr.del_movie(movie['id'], True)
