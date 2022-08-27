@@ -13,26 +13,26 @@ def is_movie_tagged(movie, filtertag): # Function Checks Movies For A Specific T
             if texttag['label'] == filtertag: return True # If HumanReadable Tag matches Specified Filter Tag return True
     else: return False # If there are no tags return False
 
-def should_movie_delete(movie, currentTime, keeptime): # Function validates if a movie should be deleted
-    if 'movieFile' in movie: return should_available_movie_delete(movie, currentTime, keeptime) # Checks if movie has been downloaded
-    elif deleteunavailablemovies: return should_unavailable_movie_delete(movie, currentTime, keeptime)
+def should_movie_delete(movie, currentTime): # Function validates if a movie should be deleted
+    if 'movieFile' in movie: return should_available_movie_delete(movie, currentTime) # Checks if movie has been downloaded
+    elif deleteunavailablemovies: return should_unavailable_movie_delete(movie, currentTime)
     else : return False
 
-def should_available_movie_delete(movie, currentTime, keeptime):
+def should_available_movie_delete(movie, currentTime):
     moviefileObj = movie['movieFile']
     added = moviefileObj['dateAdded'] # When movie has been downloaded
-    return validate_timespan_for_delete(added, currentTime, keeptime)
+    return validate_timespan_for_delete(added, currentTime)
 
-def should_unavailable_movie_delete(movie, currentTime, keeptime):
+def should_unavailable_movie_delete(movie, currentTime):
     added = movie['added']
-    return validate_timespan_for_delete(added, currentTime, keeptime)
+    return validate_timespan_for_delete(added, currentTime)
 
-def validate_timespan_for_delete(added, currentTime, keeptime):
+def validate_timespan_for_delete(added, currentTime):
     unifiedAdded = added.split('T', 1)[0] # Formatting of date
     dateAddedToDatetime = datetime.strptime(unifiedAdded, '%Y-%m-%d') # More Formatting of date
     dateAddedInSeconds = int(dateAddedToDatetime.timestamp())
     savedTime = currentTime - dateAddedInSeconds # Seconds since download
-    if savedTime >= keeptime: return True # Checks if movie has been longer saved than wanted 
+    if savedTime >= keepTime: return True # Checks if movie has been longer saved than wanted 
     else: return False
 
 def daysToSeconds(numberOfDays): # Function Converts Days To Seconds
@@ -76,10 +76,9 @@ print('FILTERTAG: ' + filtertag)
 for movie in movies:
     tagged_status = is_movie_tagged(movie, filtertag)
     if tagged_status:
-        deletable = should_movie_delete(movie, secondsNow, keepTime)
-        print(deletable)
+        deletable = should_movie_delete(movie, secondsNow)
         if deletable:
             if (dryrun | verbose) | (dryrun & verbose): print('Deleting ' + movie['title'])
             if dryrun == False: radarr.del_movie(movie['id'], True)
-              
+
 print('#### FINISHED ###')
